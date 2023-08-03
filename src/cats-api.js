@@ -7,6 +7,10 @@ const API_KEY =
 const URL_BREEDS = 'https://api.thecatapi.com/v1/breeds';
 const URL_SEARCH = 'https://api.thecatapi.com/v1/images/search';
 
+const errorEl = document.querySelector('.error');
+errorEl.hidden = true;
+
+
 export function fetchBreeds() {
   return fetch(URL_BREEDS, {
     headers: {
@@ -20,7 +24,7 @@ export function fetchBreeds() {
       return response.json();
     })
     .catch(err => {
-      console.log('Catch: ', err);
+      errorEl.hidden = false;
     });
 }
 
@@ -38,6 +42,6 @@ export function fetchCatByBreed(breedId) {
       return response.json();
     })
     .catch(err => {
-      console.log('Catch: ', err);
+      errorEl.hidden = false;
     });
 }

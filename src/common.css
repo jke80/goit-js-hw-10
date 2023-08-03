@@ -9,19 +9,26 @@ body {
 }
 .cat-info {
   display: flex;
+margin: 20px;
+}
+.error {
+color: tomato;
 }
 
 .cat-info_img {
   display: block;
-  width: 500px;
+  width: 50%;
 }
 .cat-info_container {
+  padding:  0 50px;
 }
 .cat-info_title {
+  margin: 0;
 }
 .cat-info_text {
 }
-.cat-info_temperament_title {
+.cat-info_span {
+  font-weight: bold;
 }
 .cat-info_temperament_text {
 }

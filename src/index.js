@@ -1,22 +1,28 @@
 import { fetchBreeds, fetchCatByBreed } from './cats-api';
-let breedsArr = [];
 const selectEl = document.querySelector('.breed-select');
 const catInfoEl = document.querySelector('.cat-info');
+const loaderEl = document.querySelector('.loader');
+const errorEl = document.querySelector('.error');
 
 selectEl.addEventListener('change', onSelect);
 
 function onSelect(event) {
+  if (!errorEl.hidden) {
+    errorEl.hidden = true;
+  };
+  catInfoEl.innerHTML = '';
+  loaderEl.hidden = false;
   const breedId = event.currentTarget.value;
   fetchCatByBreed(breedId).then(data => {
-    catInfoEl.innerHTML = addCatPhoto(data[0]);
+    catInfoEl.innerHTML = addCatInfo(data[0]);
+    loaderEl.hidden = true;
   });
-  addCatInfo(breedId);
 }
 
 fetchBreeds().then(breeds => {
   console.log(breeds);
-  breedsArr = breeds;
-  selectEl.innerHTML = addBreedsList(breedsArr);
+  selectEl.innerHTML = addBreedsList(breeds);
+  loaderEl.hidden = true;
 });
 
 function addBreedsList(breeds) {
@@ -25,22 +31,14 @@ function addBreedsList(breeds) {
     .join('');
 }
 
-function breedById(breedId) {
-  return breedsArr.find(breed => breed.id === breedId);
-}
-
-function addCatInfo(breedId) {
-  const { name, description, origin, temperament } = breedById(breedId);
-  console.log(name, description, origin, temperament);
-
-  return 
-}
-
-function addCatPhoto(data) {
-  return `<img class='cat-info_img' src="${data.url}" alt="">
-  <div>
-      <h1> Breeds </h1>
-      <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
-    </div>
-    </div>`;
+function addCatInfo(data) {
+  const { url, breeds } = data;
+  const { name, description, origin, temperament } = breeds[0];
+  return `<img class='cat-info_img' src="${url}" alt="">
+  <div class="cat-info_container">
+  <h1 class="cat-info_title">${name}</h1>
+  <p class="cat-info_text">${description} </p>
+  <p class="cat-info_text"> <span class="cat-info_span"> Origin:</span> ${origin}</p>
+  <p class="cat-info_temperament_text"><span class="cat-info_span">Temperament: </span>${temperament}</p>
+</div>`;
 }

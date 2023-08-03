@@ -1,0 +1,27 @@
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #fafafa;
+  color: #212121;
+  line-height: 1.5;
+}
+.cat-info {
+  display: flex;
+}
+
+.cat-info_img {
+  display: block;
+  width: 500px;
+}
+.cat-info_container {
+}
+.cat-info_title {
+}
+.cat-info_text {
+}
+.cat-info_temperament_title {
+}
+.cat-info_temperament_text {
+}

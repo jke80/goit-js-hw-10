@@ -1,10 +1,7 @@
 import SlimSelect from 'slim-select';
-
-
 import { fetchBreeds, fetchCatByBreed } from './cats-api';
 import { addCatInfo, addBreedsList } from './create-murkup';
-import "slim-select/dist/slimselect.css";
-
+import 'slim-select/dist/slimselect.css';
 
 const refs = {
   selectEl: document.querySelector('.breed-select'),
@@ -14,34 +11,26 @@ const refs = {
 };
 
 fetchBreeds().then(breeds => {
-  console.log(breeds);
   refs.selectEl.innerHTML = addBreedsList(breeds);
-  refs.loaderEl.hidden = true;
-  
+  refs.loaderEl.classList.remove('loader');
   new SlimSelect({
     select: '.breed-select',
     settings: {
       placeholderText: 'select breed',
-    }
-  });    
+    },
+  });
 });
 
 refs.selectEl.addEventListener('change', onSelect);
 
 function onSelect(event) {
-  if (!refs.errorEl.hidden) {
-    refs.errorEl.hidden = true;
-  }
   refs.catInfoEl.innerHTML = '';
-  refs.loaderEl.hidden = false;
-
+  refs.loaderEl.classList.add('loader');
   fetchCatByBreed(event.currentTarget.value).then(data => {
     refs.catInfoEl.innerHTML = addCatInfo(data[0]);
-    refs.loaderEl.hidden = true;
+    refs.loaderEl.classList.remove('loader');
   });
 }
-
-
 
 //----------------------------------------------------------------------
 // import { fetchBreeds, fetchCatByBreed } from './cats-api';

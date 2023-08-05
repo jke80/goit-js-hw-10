@@ -1,3 +1,6 @@
+import { Notify } from 'notiflix/build/notiflix-notify-aio';
+import 'notiflix/dist/notiflix-3.2.6.min.js';
+
 const API_KEY =
   'live_AmCgmr4wWhxqcfZ1vI08fed7gUEeaUtmjvQEW8kH7YDtK22PVvZzkZBGbEks1d9V';
 // import axios from 'axios';
@@ -24,7 +27,8 @@ export function fetchBreeds() {
       return response.json();
     })
     .catch(err => {
-      errorEl.hidden = false;
+      Notify.failure(`Oops! Something went wrong! Try reloading the page!`);
+      // errorEl.hidden = false;
     });
 }
 
@@ -35,13 +39,13 @@ export function fetchCatByBreed(breedId) {
     },
   })
     .then(response => {
-      // console.log(response);
       if (!response.ok) {
         throw new Error(Response.status);
       }
       return response.json();
     })
     .catch(err => {
-      errorEl.hidden = false;
+      Notify.failure(`Oops! Something went wrong! Try reloading the page!`);
+      // errorEl.hidden = false;
     });
 }

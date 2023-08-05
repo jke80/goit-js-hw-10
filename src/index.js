@@ -1,44 +1,76 @@
+import SlimSelect from 'slim-select';
+
+
 import { fetchBreeds, fetchCatByBreed } from './cats-api';
-const selectEl = document.querySelector('.breed-select');
-const catInfoEl = document.querySelector('.cat-info');
-const loaderEl = document.querySelector('.loader');
-const errorEl = document.querySelector('.error');
+import { addCatInfo, addBreedsList } from './create-murkup';
+import "slim-select/dist/slimselect.css";
 
-selectEl.addEventListener('change', onSelect);
 
-function onSelect(event) {
-  if (!errorEl.hidden) {
-    errorEl.hidden = true;
-  };
-  catInfoEl.innerHTML = '';
-  loaderEl.hidden = false;
-  const breedId = event.currentTarget.value;
-  fetchCatByBreed(breedId).then(data => {
-    catInfoEl.innerHTML = addCatInfo(data[0]);
-    loaderEl.hidden = true;
-  });
-}
+const refs = {
+  selectEl: document.querySelector('.breed-select'),
+  catInfoEl: document.querySelector('.cat-info'),
+  loaderEl: document.querySelector('.loader'),
+  errorEl: document.querySelector('.error'),
+};
 
 fetchBreeds().then(breeds => {
   console.log(breeds);
-  selectEl.innerHTML = addBreedsList(breeds);
-  loaderEl.hidden = true;
+  refs.selectEl.innerHTML = addBreedsList(breeds);
+  refs.loaderEl.hidden = true;
+  
+  new SlimSelect({
+    select: '.breed-select',
+    settings: {
+      placeholderText: 'select breed',
+    }
+  });    
 });
 
-function addBreedsList(breeds) {
-  return breeds
-    .map(({ id, name }) => `<option value="${id}">${name}</option>`)
-    .join('');
+refs.selectEl.addEventListener('change', onSelect);
+
+function onSelect(event) {
+  if (!refs.errorEl.hidden) {
+    refs.errorEl.hidden = true;
+  }
+  refs.catInfoEl.innerHTML = '';
+  refs.loaderEl.hidden = false;
+
+  fetchCatByBreed(event.currentTarget.value).then(data => {
+    refs.catInfoEl.innerHTML = addCatInfo(data[0]);
+    refs.loaderEl.hidden = true;
+  });
 }
 
-function addCatInfo(data) {
-  const { url, breeds } = data;
-  const { name, description, origin, temperament } = breeds[0];
-  return `<img class='cat-info_img' src="${url}" alt="">
-  <div class="cat-info_container">
-  <h1 class="cat-info_title">${name}</h1>
-  <p class="cat-info_text">${description} </p>
-  <p class="cat-info_text"> <span class="cat-info_span"> Origin:</span> ${origin}</p>
-  <p class="cat-info_temperament_text"><span class="cat-info_span">Temperament: </span>${temperament}</p>
-</div>`;
-}
+
+
+//----------------------------------------------------------------------
+// import { fetchBreeds, fetchCatByBreed } from './cats-api';
+// import { addCatInfo, addBreedsList } from './create-murkup';
+
+// const refs = {
+//   selectEl: document.querySelector('.breed-select'),
+//   catInfoEl: document.querySelector('.cat-info'),
+//   loaderEl: document.querySelector('.loader'),
+//   errorEl: document.querySelector('.error'),
+// };
+
+// refs.selectEl.addEventListener('change', onSelect);
+
+// function onSelect(event) {
+//   if (!refs.errorEl.hidden) {
+//     refs.errorEl.hidden = true;
+//   }
+//   refs.catInfoEl.innerHTML = '';
+//   refs.loaderEl.hidden = false;
+
+//   fetchCatByBreed(event.currentTarget.value).then(data => {
+//     refs.catInfoEl.innerHTML = addCatInfo(data[0]);
+//     refs.loaderEl.hidden = true;
+//   });
+// }
+
+// fetchBreeds().then(breeds => {
+//   refs.selectEl.innerHTML = addBreedsList(breeds);
+//   refs.loaderEl.hidden = true;
+// });
+//---------------------------------------------------------------------
